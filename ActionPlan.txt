@@ -1,0 +1,8 @@
+Plan of Action:
+* Making an point move
+* Animating the point to follow the projectile motion
+* Shape of a rocket
+* Finding the direction of motion/ tangent 
+* Implementing the tangent and normal 
+* Implementing the newton motion equations
+* Integrating all the modules
