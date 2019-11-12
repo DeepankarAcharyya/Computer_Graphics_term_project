@@ -6,9 +6,9 @@ void display(){
     //top triangle
     glBegin(GL_TRIANGLES);
          glColor3f(1.0f, 1.0f, 0.0f);
-        glVertex2i(50,70);
-        glVertex2i(70,70);
-        glVertex2i(60,90);
+        glVertex2i(5,7);
+        glVertex2i(7,7);
+        glVertex2i(6,9);
     glEnd();
     //mddle rectangle
     glBegin(GL_LINE_LOOP);
@@ -27,9 +27,9 @@ void display(){
     //right triangle
     glBegin(GL_TRIANGLES);
         glColor3f(0.0f, 0.0f, 1.0f);
-        glVertex2d(70,15);
-        glVertex2d(70,0);
-        glVertex2d(80,0);
+        glVertex2f(7.0f,15.0f);
+        glVertex2f(7.0f,0.0f);
+        glVertex2f(8.0f,0.0f);
     glEnd();
     
     glFlush();
