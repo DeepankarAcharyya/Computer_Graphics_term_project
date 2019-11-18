@@ -32,6 +32,7 @@ void display(){
 int main(int argc,char** argv){
     //Initialize glut
     glutInit(&argc,argv);
+    glutInitDisplayMode(GLUT_DOUBLE);
     //creating a window
     glutCreateWindow("Point Animation");
     //Set the window's initial width and height
