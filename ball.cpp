@@ -42,6 +42,14 @@ void display() {
          angle = i * 2.0f * PI / numSegments;  // 360 deg for all segments
          glVertex2f(cos(angle) * ballRadius, sin(angle) * ballRadius);
       }
+
+      glColor3f(0.0f, 1.0f, 0.0f);  // Blue
+      glVertex2f(0.0f, 0.0f);       // Center of circle
+      numSegments = 20;
+      for (int i = 0; i <= numSegments; i++) { // Last vertex same as first vertex
+         angle = i * 2.0f * PI / numSegments;  // 360 deg for all segments
+         glVertex2f(cos(angle) * ballRadius, sin(angle) * ballRadius);
+      }
    glEnd();
  
    glutSwapBuffers();  // Swap front and back buffers (of double buffered mode)
