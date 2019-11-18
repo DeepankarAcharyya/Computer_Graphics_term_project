@@ -1,35 +1,17 @@
 #include <GL/glut.h>
 
 void display(){
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-   
-    //top triangle
-    glBegin(GL_TRIANGLES);
-         glColor3f(1.0f, 1.0f, 0.0f);
-        glVertex2i(5,7);
-        glVertex2i(7,7);
-        glVertex2i(6,9);
-    glEnd();
-    //mddle rectangle
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); 
+    glClear(GL_COLOR_BUFFER_BIT);
+    
     glBegin(GL_LINE_LOOP);
-        glVertex2d(5,7);
-        glVertex2d(5,0);
-        glVertex2d(7,0);
-        glVertex2d(7,7);
-    glEnd();
-    //left triangle
-    glBegin(GL_TRIANGLES);
-        glColor3f(0.0f, 0.0f, 1.0f);
-        glVertex2d(5,15);
-        glVertex2d(5,0);
-        glVertex2d(4,0);
-    glEnd();
-    //right triangle
-    glBegin(GL_TRIANGLES);
-        glColor3f(0.0f, 0.0f, 1.0f);
-        glVertex2f(7.0f,15.0f);
-        glVertex2f(7.0f,0.0f);
-        glVertex2f(8.0f,0.0f);
+
+    glColor3f(0.0f,1.0f,0.0f);
+    
+    glVertex2f(0.1f, -0.6f);
+    glVertex2f(0.7f, -0.6f);
+    glVertex2f(0.4f, -0.1f);
+    
     glEnd();
     
     glFlush();
@@ -42,9 +24,9 @@ int main(int argc,char** argv){
     //creating a window
     glutCreateWindow("Rocket");
     //Set the window's initial width and height
-    glutInitWindowSize(500,500);
+    glutInitWindowSize(50,50);
     //Initial position of the top-left corner
-    glutInitWindowPosition(50,50);
+    glutInitWindowPosition(0,0);
     //display call back function
     glutDisplayFunc(display);
     //enter the event-processing loop
