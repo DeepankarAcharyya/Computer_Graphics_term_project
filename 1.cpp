@@ -24,9 +24,17 @@ class myPoint{
 const int max_memory=10000;
 myPoint path[max_memory];
 int count=0;
-myPoint p1(0,0);
+myPoint p1(-200,-300);
 
 //functions
+void draw_line(){
+   glColor3f(0, 0, 1);
+   glLineWidth(5);
+   glBegin(GL_LINES);
+   glVertex2f(-300,-300);
+   glVertex2f(1000,-300);
+   glEnd();
+}
 void draw_point(myPoint P) {
    glColor3f(1, 0, 0);
    glPointSize(10);
@@ -82,7 +90,8 @@ void display(){
    glClear(GL_COLOR_BUFFER_BIT);
    
    draw_point(p1);
-   
+   draw_line();
+
    //path tracing
    int j=0;
    glBegin(GL_LINES);
@@ -93,8 +102,8 @@ void display(){
 
    glutSwapBuffers();
 
-   if(p1.y<0){
-      p1=myPoint(0,0);
+   if(p1.y<-300){
+      p1=myPoint(-200,-300);
    }
 }
 
