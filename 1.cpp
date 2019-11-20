@@ -24,7 +24,7 @@ class myPoint{
 const int max_memory=10000;
 myPoint path[max_memory];
 int count=0;
-myPoint p1(250,40);
+myPoint p1(0,0);
 
 //functions
 void draw_point(myPoint P) {
@@ -44,17 +44,20 @@ void initGL() {
    glClearColor(1.0f, 1.0f, 1.0f, 0.0f); 
    }
 
-void calc(float t){
-        
-}
+//initial values
+int u=5000;
+float theta=30.0f;
 
-myPoint myRotate(myPoint p, float theta){
-    float rtheta=3.14/180.0 * theta;
-    myPoint p2;
-    p2.x=p.x*cos(rtheta)-p.y*sin(rtheta);
-    p2.y=p.x*sin(rtheta)+p.y*cos(rtheta);
-    return p2;
-}
+myPoint cal_path(myPoint p1){
+   float rtheta=3.14/180.0 * theta;
+   myPoint p2;
+   float x=p1.x;
+   x=x+1;
+   p2.x=x;
+   p2.y=x*tan(rtheta)-(g*x*x*0.5f/(u*cos(rtheta)*cos(rtheta)));
+   //printf("\n%f\n",p2.y);
+   return p2;
+};
 
 void f1();
 void create_scenery(int value){
@@ -67,7 +70,7 @@ void f1(){
    if(count>=max_memory){
        count=0;
    }
-   p1=myRotate(p1,4);
+   p1=cal_path(p1);
    glutTimerFunc(10,create_scenery,100);
 }
 
@@ -75,7 +78,7 @@ void display(){
    printf("\ndisplay is being called %d",count);
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
-   gluOrtho2D( -500,500,-500,500);
+   gluOrtho2D( -300,1000,-500,500);
    glClear(GL_COLOR_BUFFER_BIT);
    
    draw_point(p1);
@@ -89,6 +92,10 @@ void display(){
    glEnd();
 
    glutSwapBuffers();
+
+   if(p1.y<0){
+      p1=myPoint(0,0);
+   }
 }
 
 int main(int argc, char** argv){
@@ -101,7 +108,7 @@ int main(int argc, char** argv){
 
    glutCreateWindow("Point");
      
-   glutTimerFunc(100,create_scenery,0);
+   glutTimerFunc(1000,create_scenery,0);
    glutDisplayFunc(display);
    
    initGL();
