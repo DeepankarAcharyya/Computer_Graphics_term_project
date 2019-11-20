@@ -1,5 +1,5 @@
 Plan of Action:
-* Making an point move
+* Making an point move------------------------------------------------Done
 * Animating the point to follow the projectile motion
 * basic shapes--------------------------------------------------------Done
 * Shape of a rocket

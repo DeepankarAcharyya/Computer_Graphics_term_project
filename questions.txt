@@ -1,0 +1,6 @@
+Questions:
+-re-paint request who?
+-projection matrix and model-view matrix
+-maintaining the aspect ratio
+-world space and local/model space
+-initGL() vs glutInit()
