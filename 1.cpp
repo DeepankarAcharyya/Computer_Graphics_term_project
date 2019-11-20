@@ -25,6 +25,7 @@ const int max_memory=10000;
 myPoint path[max_memory];
 int count=0;
 myPoint p1(-200,-300);
+myPoint p2(-200,-300);
 
 //functions
 void draw_line(){
@@ -35,8 +36,10 @@ void draw_line(){
    glVertex2f(1000,-300);
    glEnd();
 }
-void draw_point(myPoint P) {
-   glColor3f(1, 0, 0);
+void draw_point(myPoint P,int i) {
+   if(i==1)
+    glColor3f(1, 0, 0);
+   else glColor3f(0,1, 0);
    glPointSize(10);
    glBegin(GL_POINTS);
    glVertex2f(P.x,P.y);
@@ -53,18 +56,19 @@ void initGL() {
    }
 
 //initial values
-int u=5000;
+float u=2000;
+
 float theta=30.0f;
 
-myPoint cal_path(myPoint p1){
+myPoint cal_path(myPoint p1,float u){
    float rtheta=3.14/180.0 * theta;
-   myPoint p2;
+   myPoint p3;
    float x=p1.x;
    x=x+1;
-   p2.x=x;
-   p2.y=x*tan(rtheta)-(g*x*x*0.5f/(u*cos(rtheta)*cos(rtheta)));
-   //printf("\n%f\n",p2.y);
-   return p2;
+   p3.x=x;
+   p3.y=x*tan(rtheta)-(g*x*x*0.5f/(u*cos(rtheta)*cos(rtheta)));
+   
+   return p3;
 };
 
 void f1();
@@ -78,18 +82,21 @@ void f1(){
    if(count>=max_memory){
        count=0;
    }
-   p1=cal_path(p1);
+   p1=cal_path(p1,u);
+   p2=cal_path(p2,u+5102);
    glutTimerFunc(10,create_scenery,100);
 }
 
 void display(){
-   printf("\ndisplay is being called %d",count);
+//   printf("\ndisplay is being called %d",count);
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
    gluOrtho2D( -300,1000,-500,500);
    glClear(GL_COLOR_BUFFER_BIT);
    
-   draw_point(p1);
+   draw_point(p1,1);
+   draw_point(p2,0);
+   
    draw_line();
 
    //path tracing
@@ -105,6 +112,10 @@ void display(){
    if(p1.y<-300){
       p1=myPoint(-200,-300);
    }
+
+   if(p2.y<-300){
+      p2=myPoint(-200,-300);
+   }
 }
 
 int main(int argc, char** argv){
@@ -117,8 +128,8 @@ int main(int argc, char** argv){
 
    glutCreateWindow("Point");
      
-   glutTimerFunc(1000,create_scenery,0);
    glutDisplayFunc(display);
+   glutTimerFunc(1000,create_scenery,0);
    
    initGL();
    glutMainLoop();               
