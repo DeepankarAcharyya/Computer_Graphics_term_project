@@ -10,7 +10,7 @@
 class myPoint{
    public:
       float x,y;
-      
+
       myPoint(){
             x=0;
             y=0;}
@@ -21,9 +21,12 @@ class myPoint{
 };
 
 //global variables
+float u1,u2,theta1,theta2,m1,m2;
+
 const int max_memory=10000;
 myPoint path1[max_memory];
 myPoint path2[max_memory];
+
 int count1=0,count2=0;
 myPoint p1(0,0);
 myPoint p2(0,0);
@@ -37,6 +40,33 @@ void draw_line(){
    glVertex2f(1200,0);
    glEnd();
 }
+
+void draw_direction_vectors(float x,float y,int i){
+   
+   glPushMatrix();
+   glTranslated(x,y,0);
+   if (i==1)
+      glRotated(m1,0,0,1);
+   else glRotated(m2,0,0,1);
+   
+   glBegin(GL_LINE_LOOP);
+   glColor3f(0,0,1);
+   glLineWidth(8);
+   glVertex2f(0,20);
+   glVertex2f(20,0);
+   glVertex2f(0,-20);
+   glEnd();
+   
+   glBegin(GL_LINE_LOOP);
+   glColor3f(0,0,1);
+   glLineWidth(50);
+   glVertex2f(0,0);
+   glVertex2f(-20,0);
+   glEnd();
+
+   glPopMatrix();
+}
+
 void draw_point(myPoint P,int i) {
    if(i==1)
     glColor3f(1, 0, 0);
@@ -44,7 +74,7 @@ void draw_point(myPoint P,int i) {
    glPointSize(10);
    glBegin(GL_POINTS);
    glVertex2f(P.x,P.y);
-   glPointSize(5);
+   glPointSize(2);
    glEnd();
 }
 
@@ -57,12 +87,24 @@ void initGL() {
    glClearColor(1.0f, 1.0f, 1.0f, 0.0f); 
    }
 
-//initial values
-float u=2000;
+float slope(int pt_index){
+    float m;
+    myPoint prev,curr;
+    if(pt_index==1){
+        curr=path1[count1];
+        prev=path1[count1-1];
+    }
+    else{
+        curr=path2[count2];
+        prev=path2[count2-1];
+    }
+        m=curr.y-prev.y;
+        m=m/(curr.x-prev.x);
+        m=atan(m);
+        return (float) m*180/PI;
+}
 
-float theta=30.0f;
-
-myPoint cal_path(myPoint p1,float u){
+myPoint cal_path(myPoint p1,float u,float theta){
    float rtheta=3.14/180.0 * theta;
    myPoint p3;
    float x=p1.x;
@@ -79,16 +121,30 @@ void create_scenery(int value){
     glutPostRedisplay();
 }
 
+float angle(){
+//upper limit=88 and lower limit =25
+    return (float)25+rand()%64;
+}
+
+float velocity(){
+//velocity upper limit=7000 and lower limit =500
+    return (float)500+rand()%6501;
+}
+
 void f1(){
    count1++;
    count2++;
+
    if(count1>=max_memory){
        count1=0;
    }
+   
    path1[count1]=p1;
    path2[count2]=p2;
-   p1=cal_path(p1,u);
-   p2=cal_path(p2,u+2102);
+   p1=cal_path(p1,u1,theta1);
+   m1=slope(1);
+   p2=cal_path(p2,u2,theta2);
+   m2=slope(2);
    glutTimerFunc(10,create_scenery,100);
 }
 
@@ -101,14 +157,19 @@ void display(){
    
    draw_point(p1,1);
    draw_point(p2,0);
-   
+
+   draw_direction_vectors(p1.x,p1.y,1);
+   draw_direction_vectors(p2.x,p2.y,2);
+
    draw_line();
 
    //path tracing
    int j1=0,j2=0;
+
    glBegin(GL_LINES);
    glColor3f(0, 0, 0);
    for(j1=0;j1<count1;j1++){
+        glVertex2f(path1[j1-1].x,path1[j1-1].y);
         glVertex2f(path1[j1].x,path1[j1].y);
     }
    glEnd();
@@ -116,6 +177,7 @@ void display(){
    glBegin(GL_LINES);
    glColor3f(0, 0, 0);
    for(j2=0;j2<count2;j2++){
+        glVertex2f(path2[j2-1].x,path2[j2-1].y);
         glVertex2f(path2[j2].x,path2[j2].y);
     }
    glEnd();
@@ -125,16 +187,25 @@ void display(){
    if(p1.y<0){
       p1=myPoint(0,0);
       count1=0;
+      u1=velocity();
+      theta1=angle();
    }
 
    if(p2.y<0){
       p2=myPoint(0,0);
       count2=0;
+      u2=velocity();
+      theta2=angle();
    }
 }
 
 int main(int argc, char** argv){
-   
+
+   u1=velocity();
+   u2=velocity();   
+   theta1=angle();
+   theta2=angle();
+
    int mode=GLUT_RGB|GLUT_DOUBLE;
    glutInit(&argc, argv);
    glutInitDisplayMode(mode);
