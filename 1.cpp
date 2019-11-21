@@ -22,18 +22,19 @@ class myPoint{
 
 //global variables
 const int max_memory=10000;
-myPoint path[max_memory];
-int count=0;
-myPoint p1(-200,-300);
-myPoint p2(-200,-300);
+myPoint path1[max_memory];
+myPoint path2[max_memory];
+int count1=0,count2=0;
+myPoint p1(0,0);
+myPoint p2(0,0);
 
 //functions
 void draw_line(){
    glColor3f(0, 0, 1);
-   glLineWidth(5);
+   glLineWidth(1);
    glBegin(GL_LINES);
-   glVertex2f(-300,-300);
-   glVertex2f(1000,-300);
+   glVertex2f(-60,0);
+   glVertex2f(1200,0);
    glEnd();
 }
 void draw_point(myPoint P,int i) {
@@ -43,6 +44,7 @@ void draw_point(myPoint P,int i) {
    glPointSize(10);
    glBegin(GL_POINTS);
    glVertex2f(P.x,P.y);
+   glPointSize(5);
    glEnd();
 }
 
@@ -78,12 +80,15 @@ void create_scenery(int value){
 }
 
 void f1(){
-   count++;
-   if(count>=max_memory){
-       count=0;
+   count1++;
+   count2++;
+   if(count1>=max_memory){
+       count1=0;
    }
+   path1[count1]=p1;
+   path2[count2]=p2;
    p1=cal_path(p1,u);
-   p2=cal_path(p2,u+5102);
+   p2=cal_path(p2,u+2102);
    glutTimerFunc(10,create_scenery,100);
 }
 
@@ -91,7 +96,7 @@ void display(){
 //   printf("\ndisplay is being called %d",count);
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
-   gluOrtho2D( -300,1000,-500,500);
+   gluOrtho2D( -60,800,-60,800);
    glClear(GL_COLOR_BUFFER_BIT);
    
    draw_point(p1,1);
@@ -100,21 +105,31 @@ void display(){
    draw_line();
 
    //path tracing
-   int j=0;
+   int j1=0,j2=0;
    glBegin(GL_LINES);
-   for(j=0;j<count;j++){
-        glVertex2f(path[j].x,path[j].y);
+   glColor3f(0, 0, 0);
+   for(j1=0;j1<count1;j1++){
+        glVertex2f(path1[j1].x,path1[j1].y);
+    }
+   glEnd();
+
+   glBegin(GL_LINES);
+   glColor3f(0, 0, 0);
+   for(j2=0;j2<count2;j2++){
+        glVertex2f(path2[j2].x,path2[j2].y);
     }
    glEnd();
 
    glutSwapBuffers();
 
-   if(p1.y<-300){
-      p1=myPoint(-200,-300);
+   if(p1.y<0){
+      p1=myPoint(0,0);
+      count1=0;
    }
 
-   if(p2.y<-300){
-      p2=myPoint(-200,-300);
+   if(p2.y<0){
+      p2=myPoint(0,0);
+      count2=0;
    }
 }
 
